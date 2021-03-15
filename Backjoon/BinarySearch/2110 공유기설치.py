@@ -21,11 +21,10 @@ house = [ int(input()) for _ in range(n) ]
 
 house.sort()
 
-min_distance = house[1] - house[0]
-max_distance = house[-1] - house[0]
+# 최소거리가 house[1] - house[0] 이 아닐 수가 있다.
+left = 1
+right = house[-1] - house[0]
 
-left = min_distance
-right = max_distance
 result = 0
 
 while left <= right:
