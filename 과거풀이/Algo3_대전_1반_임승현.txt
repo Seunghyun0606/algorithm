@@ -1,0 +1,52 @@
+# 문제3. 흑백그림 문자 압축 서술형
+
+# 결과. xx1110x1x100011xxx11000111x1x00111010
+
+# sudo(0, 0, n, n) 넣고 시작.
+# 까만칸은 0 흰칸은 1이라고 가정
+
+
+def sudo(x1, y1, x2, y2):  # x1(행), y1(열)은 네모의 좌측 맨위, x2, y2는 우측 맨아래 좌표.
+
+    if x2-x1 == 2:  # 기저사례.  각 칸이 4개 밖에 없는 네모가 되는 경우.
+        temp = []
+        for i in range(x1, x2):
+            for j in range(y1, y2):
+                temp.append(paint[i][j])
+        temp_set = set(temp)
+        if len(temp_set) == 1:          # set len 이 1이면 모두 같으니깐 그 값만 내뱉어
+            return list(temp_set)[0]
+        else:
+            return ['x'] + temp     # len이 1이상이면 갈라진거니깐 x 에다가 각 값을 내뱉어
+
+    else:
+        temp1 = []
+        a = sudo(x1, y1, x2//2, y2//2)    # 좌측 위 네모
+        temp1.append(a)
+        b = sudo(x1, y1 + y2//2, x1 + x2//2, y2)  # 우측 위 네모
+        temp1.append(b)
+        c = sudo(x1 + x2//2, y1, x2, y1 + y2//2)  # 좌측 아래 네모
+        temp1.append(c)
+        d = sudo(x1 + x2//2, y1 + y2//2, x2, y2)  # 우측 아래 네모
+        temp1.append(d)
+        for l in range(len(temp1)-1):
+            if temp1[l] != temp1[l+1]:  # 작은 사각형들이 가져온 값들이 다 같으면 그건 갈라지지 않았단 것.
+                return temp1[0]
+            else:
+                return ['x'] + temp1    # 작은 사각형들이 모아온 값이 다르면 갈라졌다는 뜻이니깐 x를 넣어줘
+
+result = sudo(0, 0, n, n)
+final = ''
+for i in range(result):  # sudo로 돌려놓은 값들을 final에 str형태로 집어넣어서 출력해냄.
+    if isinstance(i, list):
+        for k in i:
+            final += str(k)
+    else:
+        final += i
+
+print(final)
+
+
+
+
+
